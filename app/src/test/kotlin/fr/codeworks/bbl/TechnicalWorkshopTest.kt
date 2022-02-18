@@ -63,7 +63,6 @@ internal class TechnicalWorkshopTest{
           val result = TechnicalWorkshop().runCodeTest("Java")
 
             Assertions.assertThat(result).isEqualTo(0.0)
-
         }
 
 

@@ -1,5 +1,4 @@
 Adding SQL as categories
-Adding SQL as categories
 Adding Titi as candidate
 Welcome to the interview game. You'll have 8 questions on Java
 Are you ready? (y) to start?

@@ -9,7 +9,7 @@ data class CategorizedQuestions(val label: String, val questions: List<Question>
 data class CandidateResponse(val response : String, val question: Question)
 data class Candidate(var firstname: String, var lastname: String, var email: String) {}
 
-class TechnicalWorkshop {
+open class TechnicalWorkshop {
     internal var categories = mutableSetOf<String>()
     internal var candidate: Candidate? = null
 
@@ -36,13 +36,14 @@ class TechnicalWorkshop {
         var s = 0.0 // s is for score
         println("Welcome to the interview game. You'll have ${question?.size} questions on ${c}")
         print("Are you ready? (y) to start?\n")
-        val value = readLine() //response of the user
+        val value = readTheUserResponseForPlaying() //response of the user
         if (value == "y") {
             println("Let's go!")
             print("***************** Questions *****************\n")
             question?.forEach { q ->
                 print(q.label)
-                val a = readLine()
+                val a = readCandidateAnswersToQuestions()
+                print("\n")
                 if (a != null) {
                     responses.add(CandidateResponse(a, q))
                 }
@@ -52,10 +53,10 @@ class TechnicalWorkshop {
         println("***************** Response from: ${this.candidate?.firstname} *****************\n")
         responses.forEach { candidateResponse ->
             val currentQuestion = candidateResponse.question
-            println("> Question: ${candidateResponse.question} ? \n")
-            println(">>> Response: ${candidateResponse.response}. \n")
+            println("> Question: ${candidateResponse.question} ?\n")
+            println(">>> Response: ${candidateResponse.response}.\n")
             print("----> What is your evaluation: t=true or f=false ?\n")
-            val answer = readLine()
+            val answer = readCodeworkerEvaluation()
             if (answer != null) {
                 if (answer.equals("t") || answer.equals("T")) {
                     when (currentQuestion.difficulty) {
@@ -70,11 +71,21 @@ class TechnicalWorkshop {
         return s
     }
 
+    open fun readTheUserResponseForPlaying() = readLine()
+
+    open fun readCodeworkerEvaluation() = readLine()
+
+    open fun readCandidateAnswersToQuestions() = readLine()
+
 }
 
 
 fun main() {
-    val codeTest = TechnicalWorkshop()
+    runTheWholeGame(TechnicalWorkshop())
+}
+
+fun runTheWholeGame(technicalWorkshop: TechnicalWorkshop) {
+    val codeTest = technicalWorkshop
     codeTest.addCat("SQL")
     codeTest.addCan("Toto", "Titi", "titi@mail.fr")
     val score = codeTest.runCodeTest("Java")

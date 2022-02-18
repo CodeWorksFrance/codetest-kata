@@ -1,7 +1,10 @@
 package fr.codeworks.bbl
 
-import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.*
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import java.io.BufferedReader
 import java.io.FileOutputStream
 import java.io.FileReader
@@ -35,7 +38,7 @@ internal class TechnicalWorkshopTest{
 
             var line: String?
             while (gold.readLine().also { line = it } != null) {
-                Assertions.assertThat(line).isEqualTo(lead.readLine())
+                assertThat(line).isEqualTo(lead.readLine())
             }
         }
 
@@ -49,8 +52,15 @@ internal class TechnicalWorkshopTest{
 
             var line: String?
             while (gold.readLine().also { line = it } != null) {
-                Assertions.assertThat(line).isEqualTo(lead.readLine())
+                assertThat(line).isEqualTo(lead.readLine())
             }
+        }
+
+        inner class TestableTechnicalWorkshop: TechnicalWorkshop(){
+
+            override fun readTheUserResponseForPlaying() = "y"
+            override fun readCodeworkerEvaluation() = "t"
+            override fun readCandidateAnswersToQuestions() = "random"
         }
     }
 
@@ -62,17 +72,36 @@ internal class TechnicalWorkshopTest{
 
           val result = TechnicalWorkshop().runCodeTest("Java")
 
-            Assertions.assertThat(result).isEqualTo(0.0)
+            assertThat(result).isEqualTo(0.0)
         }
 
+        @Test
+        fun `Should return a score of 2,5 when the candidates is half correct`(){
+            val workshop = TestableTechnicalWorkshop()
 
+            val fakeQ1 = Question("Q1", "R1", 2)
+            val fakeQ2 = Question("Q2", "R2", 3)
+            val fakeQ3 = Question("Q3", "R3", 3)
+
+            val fakeR1 = CandidateResponse("R1", fakeQ1)
+            val fakeR2 = CandidateResponse("R1", fakeQ2)
+            val fakeR3 = CandidateResponse("R1", fakeQ3)
+
+            val allResponses = mutableListOf(fakeR1, fakeR2, fakeR3)
+            workshop.collectCandidatesAnswersToQuestions(listOf(fakeQ1,fakeQ2, fakeQ3), allResponses)
+
+            val finalScore = workshop.runCodeTest("Java")
+            assertThat(finalScore).isEqualTo(2.5)
+        }
+
+        inner class TestableTechnicalWorkshop: TechnicalWorkshop(){
+
+            override fun readTheUserResponseForPlaying() = "y"
+            override fun readCandidateAnswersToQuestions() = "random"
+            override fun computeScore(responses: MutableList<CandidateResponse>): Double = 2.5
+        }
     }
 
 
-    inner class TestableTechnicalWorkshop: TechnicalWorkshop(){
 
-        override fun readTheUserResponseForPlaying() = "y"
-        override fun readCodeworkerEvaluation() = "t"
-        override fun readCandidateAnswersToQuestions() = "random"
-    }
 }

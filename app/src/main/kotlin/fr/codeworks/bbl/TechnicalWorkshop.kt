@@ -33,24 +33,22 @@ open class TechnicalWorkshop {
         val cq = questions
         val question: List<Question>? = cq?.questions
         val responses = mutableListOf<CandidateResponse>()
-        var s = 0.0 // s is for score
         println("Welcome to the interview game. You'll have ${question?.size} questions on ${c}")
         print("Are you ready? (y) to start?\n")
         val value = readTheUserResponseForPlaying() //response of the user
         if (value == "y") {
             println("Let's go!")
             print("***************** Questions *****************\n")
-            question?.forEach { q ->
-                print(q.label)
-                val a = readCandidateAnswersToQuestions()
-                print("\n")
-                if (a != null) {
-                    responses.add(CandidateResponse(a, q))
-                }
-            }
+            collectCandidatesAnswersToQuestions(question, responses)
             println("Thank you for your participation!")
         }
         println("***************** Response from: ${this.candidate?.firstname} *****************\n")
+        val score = computeScore(responses) // s is for score
+        return score
+    }
+
+    open fun computeScore(responses: MutableList<CandidateResponse>): Double {
+        var score = 0.0 // s is for score
         responses.forEach { candidateResponse ->
             val currentQuestion = candidateResponse.question
             println("> Question: ${candidateResponse.question} ?\n")
@@ -60,15 +58,29 @@ open class TechnicalWorkshop {
             if (answer != null) {
                 if (answer.equals("t") || answer.equals("T")) {
                     when (currentQuestion.difficulty) {
-                        1 -> s += 0.25
-                        2 -> s += 0.5
-                        3 -> s += 0.75
-                        4 -> s += 1
+                        1 -> score += 0.25
+                        2 -> score += 0.5
+                        3 -> score += 0.75
+                        4 -> score += 1
                     }
                 }
             }
         }
-        return s
+        return score
+    }
+
+    open fun collectCandidatesAnswersToQuestions(
+        question: List<Question>?,
+        responses: MutableList<CandidateResponse>
+    ) {
+        question?.forEach { q ->
+            print(q.label)
+            val a = readCandidateAnswersToQuestions()
+            print("\n")
+            if (a != null) {
+                responses.add(CandidateResponse(a, q))
+            }
+        }
     }
 
     open fun readTheUserResponseForPlaying() = readLine()

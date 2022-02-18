@@ -1,0 +1,66 @@
+Adding SQL as categories
+Adding Titi as candidate
+Welcome to the interview game. You'll have 8 questions on Java
+Are you ready? (y) to start?
+Let's go!
+***************** Questions *****************
+Can a constructor be Private ?qdqsdqd
+What is JIT ?qdqsdq
+What are the new Java 8 features ?qsdqsdq
+How can a garbage collection be triggered ?dsqdsqd
+What is an anonymous class ?dsfdsdsf
+What is a RuntimeException ?sdsdfsf
+What is a HashMap ?sfsf
+Can one interface extend another interface ?sfsfs
+Thank you for your participation!
+***************** Response from: Toto *****************
+
+> Question: Question(label=Can a constructor be Private ?, answer=Yes, difficulty=3) ?
+
+>>> Response: qdqsdqd.
+
+----> What is your evaluation: t=true or f=false ?
+t
+> Question: Question(label=What is JIT ?, answer=Just-In-Time compilation. Its goal is to improve the performance of the bytecode execution according to the real needs when using a program (compilation of the bytecode in native code)., difficulty=4) ?
+
+>>> Response: qdqsdq.
+
+----> What is your evaluation: t=true or f=false ?
+t
+> Question: Question(label=What are the new Java 8 features ?, answer=Lambdas, Streams, Optional, API Date., difficulty=3) ?
+
+>>> Response: qsdqsdq.
+
+----> What is your evaluation: t=true or f=false ?
+t
+> Question: Question(label=How can a garbage collection be triggered ?, answer=We can’t directly. You can only do System.gc() to notify the garbage collector that you would like to do it but nothing obliges it to do so., difficulty=3) ?
+
+>>> Response: dsqdsqd.
+
+----> What is your evaluation: t=true or f=false ?
+t
+> Question: Question(label=What is an anonymous class ?, answer=A class that is defined at the moment of instantiation of an object., difficulty=2) ?
+
+>>> Response: dsfdsdsf.
+
+----> What is your evaluation: t=true or f=false ?
+t
+> Question: Question(label=What is a RuntimeException ?, answer=An exception that the compiler does not need to check., difficulty=2) ?
+
+>>> Response: sdsdfsf.
+
+----> What is your evaluation: t=true or f=false ?
+t
+> Question: Question(label=What is a HashMap ?, answer=Set of unordered (key, value), complexity in O(1) for search and insertion., difficulty=2) ?
+
+>>> Response: sfsf.
+
+----> What is your evaluation: t=true or f=false ?
+t
+> Question: Question(label=Can one interface extend another interface ?, answer=Yes, difficulty=1) ?
+
+>>> Response: sfsfs.
+
+----> What is your evaluation: t=true or f=false ?
+t
+The candidate as a total of 5.0 points.

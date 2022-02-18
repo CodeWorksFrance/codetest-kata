@@ -1,10 +1,7 @@
 package fr.codeworks.bbl
 
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 import java.io.BufferedReader
 import java.io.FileOutputStream
 import java.io.FileReader
@@ -14,44 +11,64 @@ internal class TechnicalWorkshopTest{
     lateinit var out: PrintStream
     val filePath = "src/test/resources/init"
 
-    @BeforeEach
-    fun setup(){
-        out = System.out
+    @Nested
+    inner class GoldenMaster {
+        @BeforeEach
+        fun setup(){
+            out = System.out
 
-    }
-    @AfterEach
-    fun destroy(){
-        System.setOut(out)
-    }
+        }
 
-    @Test
-    fun `Should make sure the last outputs matches gold when the candidate refuses to play`() {
-        System.setOut(PrintStream(FileOutputStream("$filePath/lead.txt")))
+        @AfterEach
+        fun destroy(){
+            System.setOut(out)
+        }
 
-        val gold = BufferedReader(FileReader("$filePath/gold.txt"))
-        val lead = BufferedReader(FileReader("$filePath/lead.txt"))
+        @Test
+        fun `Should make sure the last outputs matches gold when the candidate refuses to play`() {
+            System.setOut(PrintStream(FileOutputStream("$filePath/lead.txt")))
 
-        main()
+            val gold = BufferedReader(FileReader("$filePath/gold.txt"))
+            val lead = BufferedReader(FileReader("$filePath/lead.txt"))
 
-        var line: String?
-        while (gold.readLine().also { line = it } != null) {
-            Assertions.assertThat(line).isEqualTo(lead.readLine())
+            main()
+
+            var line: String?
+            while (gold.readLine().also { line = it } != null) {
+                Assertions.assertThat(line).isEqualTo(lead.readLine())
+            }
+        }
+
+        @Test
+        fun `Should make sure the last output matches the perfect score`(){
+            System.setOut(PrintStream(FileOutputStream("$filePath/lead_perfect_score.txt")))
+            val gold = BufferedReader(FileReader("$filePath/gold_perfect_score.txt"))
+            val lead = BufferedReader(FileReader("$filePath/lead_perfect_score.txt"))
+
+            runTheWholeGame(TestableTechnicalWorkshop())
+
+            var line: String?
+            while (gold.readLine().also { line = it } != null) {
+                Assertions.assertThat(line).isEqualTo(lead.readLine())
+            }
         }
     }
 
-    @Test
-    fun `Should make sure the last output matches the perfect score`(){
-        System.setOut(PrintStream(FileOutputStream("$filePath/lead_perfect_score.txt")))
-        val gold = BufferedReader(FileReader("$filePath/gold_perfect_score.txt"))
-        val lead = BufferedReader(FileReader("$filePath/lead_perfect_score.txt"))
+    @Nested
+    inner class CharacterizationTesting{
 
-        runTheWholeGame(TestableTechnicalWorkshop())
+        @Test
+        fun `Should return a score of 0 when the candidate refuses to play`(){
 
-        var line: String?
-        while (gold.readLine().also { line = it } != null) {
-            Assertions.assertThat(line).isEqualTo(lead.readLine())
+          val result = TechnicalWorkshop().runCodeTest("Java")
+
+            Assertions.assertThat(result).isEqualTo(0.0)
+
         }
+
+
     }
+
 
     inner class TestableTechnicalWorkshop: TechnicalWorkshop(){
 
